@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" src="{{ MEDIA_URL }}/media/{{ concert_info.image }}" alt="{{ concert_info.title }}" width="500">
+    </a>
+    <a href="#" style="margin:15px;" onclick="watchTrailer('{{ concert_info.title }}','{{ concert_info.trailer }}')" role="button" class="btn btn-primary btn-sm">Watch Trailer</a>
+  </div>
+  <div class="media-body form-horizontal">
+    <h1 class="media-heading">{{ concert_info.title }}</h1>
+    <br /> <br />
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Description :</label>
+      <div class="col-sm-10">
+      	<p class="form-control-static">{{ concert_info.description }}</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Location :</label>
+      <div class="col-sm-10">
+      	<p class="form-control-static">{{ concert_info.location }}</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Runtime :</label>
+      <div class="col-sm-10">
+      	<p class="form-control-static">{{ concert_info.run_length }} Minutes</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Date :</label>
+      <div class="col-sm-10">
+      	<p class="form-control-static">{{ concert_info.concert_date }}</p>
+      </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Seats :</label>
+        <div class="col-sm-10">
+            {% for s in concert_info.seat.all %}
+            {{s.seat_type}} seat for  INR {{ s.each_price }} each <br />
+            {% endfor %}
+     
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Book Seats</h3>
+  </div>
+  <div class="panel-body">
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Pay and Book</button>
+      </form>
+  </div>
+</div>
+
+{% endblock %}

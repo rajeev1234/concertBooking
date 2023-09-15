@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Welcome to the Concert Booking Application! <span class="icon-emo-happy"></span></h2>
+  <p class="lead">
+    If you already have an account, go ahead and <a href="{% url 'login' %}">log in</a>. 
+    <br />
+    <br />
+    User Sign Up <a href="{% url 'user_signup' %}">User account</a><br />
+    Artist Sign Up    <a href="{% url 'artist_signup' %}">Artist account</a>.
+  </p>
+  <hr>
+
+
+    
+  <div class="jumbotron">
+    <div class="row">
+    {% for c in concert %}
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="{{ MEDIA_URL }}/media/{{ c.image }}" alt="{{ c.title }}">
+          <div class="caption">
+            <h3>{{ c.title }}</h3>
+            <p>{{ c.description }}</p>
+            <p>{{ c.location }}</p>
+            <p><a class="btn btn-default" onclick="watchTrailer('{{ c.title }}','{{ c.trailer }}')" role="button">Watch Trailer</a> <a class="btn btn-primary" href="{% url 'concert_details' c.id %}" role="button">Book Now</a></p>
+          </div>
+        </div>
+      </div>
+    {% if forloop.counter|divisibleby:3 %}
+    </div>
+    {% if forloop.counter != movie_list|length %}
+    <div class="row">
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  </div>
+  <script type="text/javascript">
+    $('.carousel').carousel({
+      interval: 2500
+  });
+  function watchTrailer(windowName,url) {
+     newwindow=window.open(url,windowName,'height=700,width=700');
+     if (window.focus) {newwindow.focus()}
+     return false;
+   }
+  </script>
+{% endblock %}
